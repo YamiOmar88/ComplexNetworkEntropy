@@ -33,15 +33,41 @@ def read_graph_from_file(fileName):
     
     
 def write_graph_to_file(G, fileName):
-    '''Write G to file. G must be a dictionary. Either keys are tuples (i,j)
-       of edges and values are weights w_ij, or keys are nodes i and values 
-       are a property (pageRank, betweenness, etc).'''
+    '''Write G to file. G must be a dictionary. Keys are tuples (i,j)
+       of edges and values are weights w_ij.'''
     with open(fileName, 'w') as f:
         for k,v in G.items():
-            if isinstance(node, tuple):
-                i, j, w_ij = str(k[0]), str(k[1]), str(v)
-                f.write(i + ' ' + j + ' ' + w_ij + '\n')
-            else:
-                i, p = str(k), str(v)
-                f.write(i + ' ' + p + '\n')
+            i, j, w_ij = str(k[0]), str(k[1]), str(v)
+            f.write(i + ' ' + j + ' ' + w_ij + '\n')
+    return True
+    
+    
+    
+def read_centrality_values_from_file(fileName):
+    '''Read centrality values from file. The file contains one node per 
+    line and its centrality value as follows:
+    i c_i'''
+    C = {}
+    with open(fileName) as f:
+        for line in f:
+            line = line.strip().split()
+            i, c_i = line[0], float(line[1])
+            
+            try:
+                i = int(i)
+            except ValueError:
+                pass 
+            
+            C[i] = c_i
+    return C
+    
+    
+
+def write_centrality_values_to_file(C, fileName):
+    '''Write centrality values to file. C must be a dictionary. Keys are
+       nodes i and values are centrality values c_i.'''
+    with open(fileName, 'w') as f:
+        for k,v in C.items():
+            i, c_i = str(k), str(v)
+            f.write(i + ' ' + c_i + '\n')
     return True
