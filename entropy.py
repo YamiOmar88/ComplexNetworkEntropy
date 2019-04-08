@@ -9,10 +9,12 @@ class Graph:
             weight w_ij as values.'''
         self.edges = edges
         
+    
     def addEdge(self, i, j, w_ij):
         '''Allows to add and edge (i,j) and its weight w_ij to the graph'''
         self.edges[(i,j)] = w_ij
         
+    
     def deleteEdge(self, i, j):
         '''Allows to delete an edge (i,j) and its associated weight'''
         try:
@@ -20,9 +22,34 @@ class Graph:
         except KeyError:
             print("{0} cannot be deleted. {0} in Graph.".format((i,j)))
         
-    def listPaths(self, i, j):
-        '''Lists all possible paths from node i to node j.'''
-        pass
+    
+    def searchPaths(self, i, j, visited, path):
+        '''Searches all possible paths from node i to node j.'''
+        # Set current node as visited and store it in path 
+        visiting = dict(visited) 
+        visiting[i] = True 
+        aux = list(path)
+        aux.append(i)
+        # If current node is not same as destination, recursively
+        # search adjacent nodes.  
+        all_paths = []        
+        if i != j:
+            for u in self.adjacencyList[1].get(i, []):
+                if visited[u] == False:
+                    all_paths += self.searchPaths(u, j, visiting, aux)
+        else:
+            all_paths += [aux[:]]
+        return all_paths
+
+    def printAllPaths(self, i, j):
+        '''Print all possible paths from node i to node j.'''
+        # Set all nodes as not visited 
+        visited = {n: False for n in self.nodes}
+        # Create a list to store the path 
+        path = []
+        # Call recursive function to search for paths
+        return self.searchPaths(i, j, visited, path)
+        
         
     @property
     def nodes(self):
@@ -31,6 +58,7 @@ class Graph:
         nodes = [i[0] for i in edges] + [i[1] for i in edges]
         return set(nodes)
         
+    
     @property
     def adjacencyList(self):
         '''Returns the adjacency list.'''
@@ -43,6 +71,7 @@ class Graph:
         outgoing = {k:set(v) for k,v in outgoing.items()}
         return ingoing, outgoing
         
+    
     @property
     def degree(self):
         '''Calculate the degree of each node.'''
