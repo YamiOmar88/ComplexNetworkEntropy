@@ -1,6 +1,7 @@
 # Entropy Centrality
 # Author: Yamila M. Omar
 # Date: 5/4/2019
+from math import log
 
 class Graph:
     def __init__(self, edges=dict()):
@@ -35,14 +36,14 @@ class Graph:
         all_paths = []        
         if i != j:
             for u in self.adjacencyList[1].get(i, []):
-                if visited[u] == False:
+                if visiting[u] == False:
                     all_paths += self.searchPaths(u, j, visiting, aux)
         else:
             all_paths += [aux[:]]
         return all_paths
 
-    def printAllPaths(self, i, j):
-        '''Print all possible paths from node i to node j.'''
+    def findAllPaths(self, i, j):
+        '''Find all possible paths from node i to node j.'''
         # Set all nodes as not visited 
         visited = {n: False for n in self.nodes}
         # Create a list to store the path 
@@ -50,6 +51,70 @@ class Graph:
         # Call recursive function to search for paths
         return self.searchPaths(i, j, visited, path)
         
+    
+    def _downstream_degree(self, t, path):
+        '''Determine the downstream degree of t. Input variables:
+        - node t for which the downstream degree is required,
+        - path in which this downstream degree is to be calculated.
+        The function returns the downstream degree of node t as 
+        defined by Tutzauer (2007). The function is generalized to 
+        also work with weighted graphs.'''
+        ingoing, outgoing = self.adjacencyList
+        downstream_degree = 0
+        t_index = path.index(t)
+        for adj_node in outgoing[t]:
+            if adj_node not in path[:t_index]:
+                downstream_degree += self.edges[ (t, adj_node) ]
+        return downstream_degree
+        
+        
+    def _transfer_probability(self, t, path):
+        '''Determine the transfer probability of path k. Input variables:
+        - node t for which the transfer probability is required,
+        - path in which this transfer probability is to be calculated.
+        The function returns the transfer probability of node t as 
+        defined by Tutzauer (2007). The function is generalized to 
+        also work with weighted graphs.'''
+        D_t = self._downstream_degree(t, path)
+        if D_t == 0:
+            T_k = 0
+        else:
+            t_index = path.index(t)
+            edge =  (t, path[t_index + 1])
+            T_k = self.edges[edge] / D_t
+        return T_k
+        
+    def _stopping_probability(self, t, path):
+        '''Determine the stopping probability of path k. Input variables:
+        - node t for which the stopping probability is required,
+        - path in which this stopping probability is to be calculated.
+        The function returns the stopping probability of node t as 
+        defined by Tutzauer (2007). The function is generalized to 
+        also work with weighted graphs. In order to work for looped 
+        graphs, the edge (t,t) must explicitly show up in self.edges!'''
+        D_t = self._downstream_degree(t, path)
+        if D_t == 0:
+            sigma_k = 1
+        else:
+            edge = (t, t)
+            sigma_k = self.edges.get(edge, 0) / D_t
+        return sigma_k
+    
+    def _probability_path_ij(self, i, j):
+        '''Calculate the probability of path i -> j. This is done 
+        following the general formulae on Tutzauer (2007).'''
+        prob_ij = 0
+        all_paths = self.findAllPaths(i, j)
+        for path in all_paths:
+            product = 1
+            for node in path[:-1]:
+                T_k = self._transfer_probability(node, path)
+                product = product * T_k 
+            product = product * self._stopping_probability(j, path)
+            prob_ij += product 
+        return prob_ij
+        
+
         
     @property
     def nodes(self):
@@ -90,3 +155,14 @@ class Graph:
             inStrength[j] = inStrength[j] + weight 
             outStrength[i] = outStrength[i] + weight
         return inStrength, outStrength
+        
+    @property
+    def entropyCentrality(self):
+        '''Calculate the entropy of each node.'''
+        C_H = {k:0 for k in self.nodes}
+        for i in self.nodes:
+            for j in self.nodes:
+                p_ij = self._probability_path_ij(i, j)
+                if p_ij != 0: C_H[i] = C_H[i] + p_ij * log(p_ij, 2)
+            C_H[i] = - C_H[i]
+        return C_H
