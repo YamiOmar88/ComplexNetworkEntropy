@@ -62,7 +62,7 @@ class Graph:
     @property
     def adjacencyList(self):
         '''Returns the adjacency list.'''
-        ingoing, outgoing = {}, {}
+        ingoing, outgoing = {k:[] for k in self.nodes}, {k:[] for k in self.nodes}
         for edge in self.edges.keys():
             i, j = edge[0], edge[1]
             outgoing[i] = outgoing.get(i, []) + [j]
@@ -76,6 +76,17 @@ class Graph:
     def degree(self):
         '''Calculate the degree of each node.'''
         ingoing, outgoing = self.adjacencyList
-        inDegree = {k:len(ingoing[k]) if k in ingoing else 0 for k in g.nodes}
-        outDegree = {k:len(outgoing[k]) if k in outgoing else 0 for k in g.nodes}
+        inDegree = {k:len(ingoing[k]) if k in ingoing else 0 for k in self.nodes}
+        outDegree = {k:len(outgoing[k]) if k in outgoing else 0 for k in self.nodes}
         return inDegree, outDegree
+        
+        
+    @property
+    def strength(self):
+        '''Calculate the strength of each node.'''
+        inStrength, outStrength = {k:0 for k in self.nodes}, {k:0 for k in self.nodes}
+        for edge,weight in self.edges.items():
+            i, j = edge[0], edge[1]
+            inStrength[j] = inStrength[j] + weight 
+            outStrength[i] = outStrength[i] + weight
+        return inStrength, outStrength
