@@ -41,7 +41,7 @@ class LorenzCurve:
 # =================================================
 def plot(curves, curve_names, y_label, file_name):
     ''' LorenzCurvePlot plots and saves the Lorenz curve(s). Variables:
-    - curves: list of tuples (x,y) containing all curves,
+    - curves: list of tuples (x,y,c) containing all curves (x,y) and the color c,
     - curve_names: names of those curves in the same order as the list,
     - y_label: string. percentage of cumulative sum of what?
     - file_name: name of file where to save the plot.'''
@@ -54,10 +54,10 @@ def plot(curves, curve_names, y_label, file_name):
     plt.ylim(0,1)
     
     # Plot al other curves
-    for (x,y) in curves:
-        plt.plot(x, y, marker='o', markersize=2, linewidth=2)
-    plt.xlabel('percentage of nodes')
-    yL = 'percentage of cumulative sum of ' + y_label + ' values'
+    for (x,y,c) in curves:
+        plt.plot(x, y, marker='o', color=c, markersize=2, linewidth=2)
+    plt.xlabel('fraction of nodes')
+    yL = 'fraction of cumulative sum of ' + y_label + ' values'
     plt.ylabel(yL)
     plt.legend([''] + curve_names, loc=2)
     file_name = file_name + '.pdf'
