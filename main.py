@@ -2,8 +2,9 @@
 # Author: Yamila M. Omar
 # Date: 10/4/2019
 
-import GraphFile
-import Graph 
+import graphfile
+import graph 
+import lorenzcurve
 
 # Some useful functions
 # =====================
@@ -33,8 +34,8 @@ def remove_underutilized_edges(normalized_edges, tolerance=0.05):
 
 # Read data
 # =========
-graph_to_study = "fullNetwork"
-file = GraphFile.GraphFile("data/" + graph_to_study + ".txt")
+graph_to_study = input("Which graph should we study?\n Options: family1, family2, family3 and fullNetwork\n")
+file = graphfile.GraphFile("data/" + graph_to_study + ".txt")
 edges = file.read_edges_from_file()
 
 # Process data
@@ -44,7 +45,7 @@ most_used_edges = remove_underutilized_edges(normalized_edges, tolerance=0.05)
 
 # Calculations / Results
 # =======================
-g = Graph.Graph(most_used_edges)
+g = graph.Graph(most_used_edges)
 C_H = g.entropyCentrality
 
 for k,v in C_H.items():
@@ -52,5 +53,5 @@ for k,v in C_H.items():
     
 # Write to file
 # =============
-file = GraphFile.GraphFile("results/entropyCentrality_" + graph_to_study + ".txt")
-file.write_centrality_values_to_file(C_H)
+# file = graphfile.GraphFile("results/entropyCentrality_" + graph_to_study + ".txt")
+# file.write_centrality_values_to_file(C_H)
