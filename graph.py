@@ -22,6 +22,29 @@ class Graph:
             self.edges.pop((i,j))
         except KeyError:
             print("{0} cannot be deleted. {0} in Graph.".format((i,j)))
+            
+            
+    def normalize(self):
+        '''This function allows to set edge weights in a 0 to 1 scale.'''
+        totSum = 0
+        for k,v in self.edges.items():
+            if k[0] == 'i':
+                totSum += v
+        normalized_edges = {}
+        for k,v in self.edges.items():
+            normalized_edges[k] = round(v/totSum, 5)
+        return normalized_edges
+        
+        
+    def remove_underutilized_edges(self, tolerance=0.05):
+        ''' This function removes edges whose weight is below a tolerance.
+        Input variables: tolerance (float).'''
+        normalized_edges = self.normalize()
+        new_dict = {}
+        for k,v in normalized_edges.items():
+            if v >= tolerance:
+                new_dict[k] = v
+        return new_dict
         
     
     def searchPaths(self, i, j, visited, path):
