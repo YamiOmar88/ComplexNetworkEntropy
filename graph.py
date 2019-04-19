@@ -36,15 +36,31 @@ class Graph:
         return normalized_edges
         
         
-    def remove_underutilized_edges(self, tolerance=0.05):
-        ''' This function removes edges whose weight is below a tolerance.
-        Input variables: tolerance (float).'''
-        normalized_edges = self.normalize()
+    def _remove_edges_below_tolerance(self, edges, tolerance):
+        '''This function is used by remove_underutilized_edges and should 
+        not be called by users. It takes two input variables: 
+        - edges: dictionary with tuples of edges (i,j) as keys,
+        - tolerance: and integer or float used to filter out edges.
+        The function returns a new dictionary of edges.'''
         new_dict = {}
-        for k,v in normalized_edges.items():
+        for k,v in edges.items():
             if v >= tolerance:
                 new_dict[k] = v
         return new_dict
+    
+    
+    def remove_underutilized_edges(self, tolerance, normalize=False):
+        ''' This function removes edges whose weight is below a tolerance.
+        Input variables: 
+        - tolerance (integer or float) used to filter out edges, 
+        - normalize (default value False) whether the weighted edges are to 
+        be normalized.
+        The function returns a dictionary of edges.'''
+        if normalize:
+            normalized_edges = self.normalize()
+            return self._remove_edges_below_tolerance(normalized_edges, tolerance)
+        else:
+            return self._remove_edges_below_tolerance(self.edges, tolerance)
         
     
     def searchPaths(self, i, j, visited, path):
