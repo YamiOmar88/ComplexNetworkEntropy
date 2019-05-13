@@ -1,3 +1,7 @@
 __pycache__
 data
 results
+
+2019_05_*_*.py
+betweenness_centrality.py
+clustering_coefficient.py
