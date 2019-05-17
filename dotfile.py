@@ -77,7 +77,7 @@ class DOT_File:
             if n not in ['i', 'f']:
                 c = colors.get(n, None)
                 p = property.get(n, 0)
-                p = ', width=' + str(p*10 + 0.5) + ', height=' + str(p*10 + 0.5) + ', fixedsize=true]\n' 
+                p = ', width=' + str(p) + ', height=' + str(p) + ', fixedsize=true]\n' 
                 file_content += str(n) + ' [shape=circle, style=filled, fontsize=20, color=' + c + p
                 
         # Edges
