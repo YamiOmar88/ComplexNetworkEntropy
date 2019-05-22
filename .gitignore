@@ -1,6 +1,7 @@
 __pycache__
 data
 results
+plots
 
 2019_05_*_*.py
 betweenness_centrality.py
