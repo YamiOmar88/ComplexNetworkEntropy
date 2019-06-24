@@ -153,6 +153,16 @@ class Graph:
             prob_ij += product 
         return prob_ij
         
+        
+    def get_node_entropy(self, i):
+        '''Calculate the entropy of node i. The function returns 
+        a tuple (i, C_H) of node i and its entropy.'''
+        C_H = 0
+        for j in self.nodes:
+            p_ij = self._probability_path_ij(i, j)
+            if p_ij != 0: C_H = C_H + p_ij * log(p_ij, 2)
+        C_H = - C_H
+        return (i, C_H)
 
         
     @property
