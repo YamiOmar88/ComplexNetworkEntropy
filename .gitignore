@@ -3,6 +3,6 @@ data
 results
 plots
 
-2019_05_*_*.py
+2019_0*_*_*.py
 betweenness_centrality.py
 clustering_coefficient.py
