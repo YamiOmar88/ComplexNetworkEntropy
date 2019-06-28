@@ -2,6 +2,7 @@ __pycache__
 data
 results
 plots
+code_profiling
 
 2019_0*_*_*.py
 betweenness_centrality.py
