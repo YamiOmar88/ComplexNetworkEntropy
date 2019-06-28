@@ -9,7 +9,15 @@ class Graph:
             - edges: dictionary with edge tuples as keys (i,j) and
             weight w_ij as values.'''
         self.edges = edges
+        self.nodes = self._get_set_of_nodes()
         
+    
+    def _get_set_of_nodes(self):
+        '''Find the nodes from the edges.'''
+        edges = list(self.edges.keys())
+        nodes = [i[0] for i in edges] + [i[1] for i in edges]
+        return set(nodes)
+    
     
     def addEdge(self, i, j, w_ij):
         '''Allows to add and edge (i,j) and its weight w_ij to the graph'''
@@ -164,13 +172,6 @@ class Graph:
         C_H = - C_H
         return (i, C_H)
 
-        
-    @property
-    def nodes(self):
-        '''Returns the set of nodes for this graph'''
-        edges = list(self.edges.keys())
-        nodes = [i[0] for i in edges] + [i[1] for i in edges]
-        return set(nodes)
         
     
     @property
