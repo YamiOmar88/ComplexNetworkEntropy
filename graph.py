@@ -69,6 +69,16 @@ class Graph:
             return self._remove_edges_below_tolerance(normalized_edges, tolerance)
         else:
             return self._remove_edges_below_tolerance(self.edges, tolerance)
+            
+            
+    def _get_downstream_nodes_of_i(self, i):
+        '''This function finds the downstream neighbours of node i.'''
+        downstream_nodes_of_i = list()
+        for edge in self.edges.keys():
+            u, v = edge[0], edge[1]
+            if u == i: downstream_nodes_of_i.append(v)
+        downstream_nodes_of_i = set(downstream_nodes_of_i)
+        return list(downstream_nodes_of_i)
         
     
     def searchPaths(self, i, j, visited, path):
@@ -82,7 +92,8 @@ class Graph:
         # search adjacent nodes.  
         all_paths = []        
         if i != j:
-            for u in self.adjacencyList[1].get(i, []):
+            downstream_nodes_of_i = self._get_downstream_nodes_of_i(i)
+            for u in downstream_nodes_of_i:
                 if visiting[u] == False:
                     all_paths += self.searchPaths(u, j, visiting, aux)
         else:
@@ -106,10 +117,10 @@ class Graph:
         The function returns the downstream degree of node t as 
         defined by Tutzauer (2007). The function is generalized to 
         also work with weighted graphs.'''
-        ingoing, outgoing = self.adjacencyList
+        downstream_nodes_of_t = self._get_downstream_nodes_of_i(t)
         downstream_degree = 0
         t_index = path.index(t)
-        for adj_node in outgoing[t]:
+        for adj_node in downstream_nodes_of_t:
             if adj_node not in path[:t_index]:
                 downstream_degree += self.edges[ (t, adj_node) ]
         return downstream_degree
