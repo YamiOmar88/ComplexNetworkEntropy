@@ -102,8 +102,7 @@ class Graph:
         # search adjacent nodes.
         all_paths = []
         if i != j:
-            downstream_nodes_of_i = self._get_downstream_nodes_of_i(i)
-            for u in downstream_nodes_of_i:
+            for u in self.downstream_nodes[i]:
                 if visiting[u] == False:
                     all_paths += self.searchPaths(u, j, visiting, aux)
         else:
@@ -127,10 +126,9 @@ class Graph:
         The function returns the downstream degree of node t as
         defined by Tutzauer (2007). The function is generalized to
         also work with weighted graphs.'''
-        downstream_nodes_of_t = self._get_downstream_nodes_of_i(t)
         downstream_degree = 0
         t_index = path.index(t)
-        for adj_node in downstream_nodes_of_t:
+        for adj_node in self.downstream_nodes[t]:
             if adj_node not in path[:t_index]:
                 downstream_degree += self.edges[ (t, adj_node) ]
         return downstream_degree
