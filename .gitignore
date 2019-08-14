@@ -3,6 +3,7 @@ data
 results
 plots
 code_profiling
+HPC_analysis
 
 2019_0*_*_*.py
 betweenness_centrality.py
