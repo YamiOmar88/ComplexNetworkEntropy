@@ -191,6 +191,9 @@ class Graph:
         C_H = - C_H
         return (i, C_H)
 
+    def get_node_entropy_and_print(self, i):
+        print(self.get_node_entropy(i))
+
 
 
     @property
