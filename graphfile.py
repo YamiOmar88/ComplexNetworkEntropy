@@ -87,3 +87,18 @@ class GraphFile:
                 s = ' '.join(p)
                 f.write(s + '\n')
         return True
+
+
+
+    def read_paths_from_file(self):
+        '''Read paths from file. They must be saved in the format given by
+        the write_paths_to_file method.'''
+        with open(self.filename) as f:
+            all_paths = dict()
+            for line in f:
+                line = line.strip().split(' ')
+                line = [int(x) for x in line]
+                i, j = line[0], line[-1]
+                all_paths[(i,j)] = all_paths.get((i,j), [])
+                all_paths[(i,j)].append(line)
+        return all_paths
