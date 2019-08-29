@@ -119,6 +119,21 @@ class Graph:
         return self.searchPaths(i, j, visited, path)
 
 
+    def find_paths_and_log(self, i, j):
+        '''This function allows to log all paths. It calls findAllPaths(i,j)
+        to search for the paths but adds the option to log.
+        IMPORTANT: The logging must be configured on the main script. Here is a
+        suggested example to add to main:
+
+        import logging
+        logging.basicConfig(filename="mylog.log", level=logging.INFO, format='%(asctime)s === %(message)s')
+        '''
+        import logging
+        all_paths = self.findAllPaths(i, j)
+        logging.info(all_paths)
+        return True
+
+
     def _downstream_degree(self, t, path):
         '''Determine the downstream degree of t. Input variables:
         - node t for which the downstream degree is required,
