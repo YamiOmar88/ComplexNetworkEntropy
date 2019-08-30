@@ -11,6 +11,7 @@ class Graph:
         self.edges = edges
         self.nodes = self._get_set_of_nodes()
         self.downstream_nodes = self._get_downstream_nodes()
+        self.all_paths = {}
 
 
     def _get_set_of_nodes(self):
@@ -129,8 +130,8 @@ class Graph:
         logging.basicConfig(filename="mylog.log", level=logging.INFO, format='%(asctime)s === %(message)s')
         '''
         import logging
-        all_paths = self.findAllPaths(i, j)
-        logging.info(all_paths)
+        paths_i_to_j = self.findAllPaths(i, j)
+        logging.info(paths_i_to_j)
         return True
 
 
@@ -185,8 +186,9 @@ class Graph:
         '''Calculate the probability of path i -> j. This is done
         following the general formulae on Tutzauer (2007).'''
         prob_ij = 0
-        all_paths = self.findAllPaths(i, j)
-        for path in all_paths:
+        if self.all_paths.get((i,j), None) == None:
+            self.all_paths[(i,j)] = self.findAllPaths(i, j)
+        for path in self.all_paths[(i,j)]:
             product = 1
             for node in path[:-1]:
                 T_k = self._transfer_probability(node, path)
