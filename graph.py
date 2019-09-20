@@ -131,7 +131,8 @@ class Graph:
         '''
         import logging
         paths_i_to_j = self.findAllPaths(i, j)
-        logging.info("i= %s - j= %s - paths: %s", i, j, paths_i_to_j)
+        for path in paths_i_to_j:
+            logging.info("i=%s j=%s path=%s", i, j, path)
         return True
 
 
