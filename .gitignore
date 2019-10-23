@@ -5,6 +5,6 @@ plots
 code_profiling
 HPC_analysis
 
-2019_0*_*_*.py
+2019_*_*_*.py
 betweenness_centrality.py
 clustering_coefficient.py
