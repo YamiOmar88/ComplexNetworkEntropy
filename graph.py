@@ -199,6 +199,14 @@ class Graph:
         return prob_ij
 
 
+    def _print_probability_path_ij(self, i, j):
+        '''Calculate the probability of path i -> j. This is done
+        using the method _probability_path_ij(i,j). This method returns
+        a tuple ((i,j), prob_ij).'''
+        prob_ij = self._probability_path_ij(i, j)
+        return ((i,j), prob_ij)
+
+
     def get_node_entropy(self, i):
         '''Calculate the entropy of node i. The function returns
         a tuple (i, C_H) of node i and its entropy.'''
