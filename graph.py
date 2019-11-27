@@ -201,10 +201,10 @@ class Graph:
 
     def _print_probability_path_ij(self, i, j):
         '''Calculate the probability of path i -> j. This is done
-        using the method _probability_path_ij(i,j). This method returns
-        a tuple ((i,j), prob_ij).'''
+        using the method _probability_path_ij(i,j). This method prints
+        the values of i, j and prob_ij.'''
         prob_ij = self._probability_path_ij(i, j)
-        return ((i,j), prob_ij)
+        print("i={}, j={}, prob_ij={}".format(i, j, prob_ij))
 
 
     def get_node_entropy(self, i):
