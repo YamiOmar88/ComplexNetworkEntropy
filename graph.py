@@ -11,6 +11,7 @@ class Graph:
         self.edges = edges
         self.nodes = self._get_set_of_nodes()
         self.downstream_nodes = self._get_downstream_nodes()
+        self.downstream_strength = self._get_downstream_strength()
         self.all_paths = {}
 
 
@@ -90,6 +91,23 @@ class Graph:
         for n in self.nodes:
             downtream_nodes[n] = self._get_downstream_nodes_of_i(n)
         return downtream_nodes
+
+
+    def _get_downstream_stregth_of_i(self, i):
+        '''This function calculates the downstream stregth of node i.'''
+        downstream_stregth_of_i = 0
+        for edge, weight in self.edges.items():
+            if edge[0] == i:
+                downstream_stregth_of_i += weight
+        return downstream_stregth_of_i
+
+    def _get_downstream_strength(self):
+        '''This function returns the downstream strength of each node in the
+        graph. It is used to assign this value to an attribute.'''
+        downstream_stregth = dict()
+        for n in self.nodes:
+            downstream_stregth[n] = self._get_downstream_stregth_of_i(n)
+        return downstream_stregth
 
 
     def searchPaths(self, i, j, visited, path):
