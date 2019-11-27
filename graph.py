@@ -161,11 +161,17 @@ class Graph:
         The function returns the downstream degree of node t as
         defined by Tutzauer (2007). The function is generalized to
         also work with weighted graphs.'''
-        downstream_degree = 0
+        # downstream_degree = 0
+        # t_index = path.index(t)
+        # for adj_node in self.downstream_nodes[t]:
+        #     if adj_node not in path[:t_index]:
+        #         downstream_degree += self.edges[ (t, adj_node) ]
+        # return downstream_degree
+        downstream_degree = self.downstream_strength[t]
         t_index = path.index(t)
-        for adj_node in self.downstream_nodes[t]:
-            if adj_node not in path[:t_index]:
-                downstream_degree += self.edges[ (t, adj_node) ]
+        already_visited = set(self.downstream_nodes[t]) & set(path[:t_index])
+        for adj_node in already_visited:
+            downstream_degree = downstream_degree - self.edges[ (t, adj_node) ]
         return downstream_degree
 
 
