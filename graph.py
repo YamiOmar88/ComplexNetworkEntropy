@@ -214,12 +214,12 @@ class Graph:
         if self.all_paths.get((i,j), None) == None:
             self.all_paths[(i,j)] = self.findAllPaths(i, j)
         for path in self.all_paths[(i,j)]:
-            product = 1
-            for node in path[:-1]:
-                T_k = self._transfer_probability(node, path)
-                product = product * T_k
-            product = product * self._stopping_probability(j, path)
-            prob_ij += product
+            product = self._stopping_probability(j, path)
+            if product != 0:
+                for node in path[:-1]:
+                    T_k = self._transfer_probability(node, path)
+                    product = product * T_k
+                prob_ij += product
         return prob_ij
 
 
