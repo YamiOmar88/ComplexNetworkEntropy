@@ -230,6 +230,19 @@ class Graph:
         prob_ij = self._probability_path_ij(i, j)
         print("i={}, j={}, prob_ij={}".format(i, j, prob_ij))
 
+    def _log_probability_path_ij(self, i, j):
+        '''This function allows to log probabilities.
+        IMPORTANT: The logging must be configured on the main script. Here is a
+        suggested example to add to main:
+
+        import logging
+        logging.basicConfig(filename="mylog.log", level=logging.INFO, format='%(asctime)s === %(message)s')
+        '''
+        import logging
+        prob_ij = self._probability_path_ij(i, j)
+        logging.info("i=%s j=%s prob=%s", i, j, prob_ij)
+        return True
+
 
     def get_node_entropy(self, i):
         '''Calculate the entropy of node i. The function returns
