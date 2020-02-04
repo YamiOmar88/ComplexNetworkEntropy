@@ -125,7 +125,7 @@ class Graph:
                 if visiting[u] == False:
                     all_paths += self.searchPaths(u, j, visiting, aux)
         else:
-            all_paths += [aux[:]]
+            all_paths += [tuple(aux[:])]
         return all_paths
 
     def findAllPaths(self, i, j):
