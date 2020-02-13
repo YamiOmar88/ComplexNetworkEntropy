@@ -1,5 +1,7 @@
 __pycache__
-data
+data/family*.txt
+data/fullNetwork.txt
+data/readme.txt
 results
 plots
 code_profiling
