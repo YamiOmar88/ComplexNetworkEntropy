@@ -138,6 +138,29 @@ class Graph:
         return self.searchPaths(i, j, visited, path)
 
 
+    def yield_paths_from_i(self, i):
+        """Find all paths from node i. This method produces a generator as
+        opposed to a list of paths (obtained using the method findAllPaths).
+        """
+        path = [i]                  # path traversed so far
+        seen = {i}                  # set of vertices in path
+        yield path
+
+        def search():
+            for neighbour in self.downstream_nodes[path[-1]]:
+                if neighbour not in seen:
+                    seen.add(neighbour)
+                    path.append(neighbour)
+                    yield from search()
+                    yield list(path)
+                    path.pop()
+                    seen.remove(neighbour)
+
+        yield from search()
+
+
+
+
     def find_paths_and_log(self, i, j):
         '''This function allows to log all paths. It calls findAllPaths(i,j)
         to search for the paths but adds the option to log.
