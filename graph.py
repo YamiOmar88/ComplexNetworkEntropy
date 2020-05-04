@@ -295,6 +295,18 @@ class Graph:
         C_H = - C_H
         return (i, C_H)
 
+    def calculate_node_entropy(self, i):
+        '''Calculate the entropy of node i. The function returns
+        a tuple (i, C_H) of node i and its entropy.'''
+        C_H = 0
+        p_ij = self._probability_paths_from_i(i)
+        for j in self.nodes:
+            if p_ij[(i,j)] != 0:
+                C_H = C_H + p_ij[(i,j)] * log(p_ij[(i,j)], 2)
+        C_H = - C_H
+        return (i, C_H)
+
+
     def get_node_entropy_and_print(self, i):
         print(self.get_node_entropy(i))
 
