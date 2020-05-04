@@ -246,6 +246,24 @@ class Graph:
         return prob_ij
 
 
+    def _probability_paths_from_i(self, i):
+        '''Calculate all the probabilities i -> j for all j in G. This
+        done following the general formulae on Tutzauer (2007). This
+        function differs from _probability_path_ij in that it uses a
+        generator to obtain paths instead of calculating them and storing
+        them on RAM.'''
+        prob_ij = {(i,j):0 for j in self.nodes}
+        for path in self.yield_paths_from_i(i):
+            i, j = path[0], path[-1]
+            product = self._stopping_probability(j, path)
+            if product != 0:
+                for node in path[:-1]:
+                    T_k = self._transfer_probability(node, path)
+                    product = product * T_k
+                prob_ij[(i,j)] += product
+        return prob_ij
+
+
     def _print_probability_path_ij(self, i, j):
         '''Calculate the probability of path i -> j. This is done
         using the method _probability_path_ij(i,j). This method prints
