@@ -151,8 +151,8 @@ class Graph:
                 if neighbour not in seen:
                     seen.add(neighbour)
                     path.append(neighbour)
-                    yield from search()
                     yield list(path)
+                    yield from search()
                     path.pop()
                     seen.remove(neighbour)
 
@@ -308,7 +308,7 @@ class Graph:
 
 
     def get_node_entropy_and_print(self, i):
-        print(self.get_node_entropy(i))
+        print(self.calculate_node_entropy(i))
 
 
 
