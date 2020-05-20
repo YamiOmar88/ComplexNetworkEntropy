@@ -1,6 +1,6 @@
 __pycache__
 data/family*.txt
-data/fullNetwork.txt
+data/FN.txt
 data/readme.txt
 results
 plots
